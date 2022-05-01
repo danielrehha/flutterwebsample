@@ -4,7 +4,7 @@ This project is a web admin client for businesses to use for appointment managem
 Since starting the project this client has been rewritten in Blazor because of Flutter Web's poor initial load time.
 
 Backend API URL is set to localhost by default, but is overridden at the CI stage with an environment variable.
-The project then is dockerized and pushed to an Azure Container Registry
+The project is then dockerized and pushed to an Azure Container Registry
 
 The virtual machine is hosted in Azure and is running linux, where an instance of Watchtower (https://containrrr.dev/watchtower/) checks for new images every 30 seconds and pulls the latest image if a new one is detected.
 
