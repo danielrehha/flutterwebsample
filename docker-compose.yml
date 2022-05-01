@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:
+  web:
+    image: allbertcms3
+    ports:
+      - 8080:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: >
+            sh -c "flutter run --release -d web-server --web-port 3000 --web-hostname 0.0.0.0 --dart-define=SERVER_ADDRESS=$$SERVER_ADDRESS"

@@ -1,0 +1,4 @@
+enum ServiceTab {
+  Details,
+  Settings,
+}

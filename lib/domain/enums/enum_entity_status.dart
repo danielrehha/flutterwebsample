@@ -1,0 +1,4 @@
+enum EntityStatus {
+  Active,
+  Paused,
+}

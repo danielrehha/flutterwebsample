@@ -1,0 +1,4 @@
+enum CustomerOrderBy{
+  AppointmentCountAscending,
+  AppointmentCountDescending,
+}

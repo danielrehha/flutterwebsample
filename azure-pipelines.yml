@@ -1,0 +1,50 @@
+trigger:
+- master
+- develop
+- feature/*
+- hotfix/*
+
+variables:
+  ${{ if eq( variables['Build.SourceBranchName'], 'master' ) }}:
+    imageName: release
+    serverCon: $(PROD_SERVER_ADR)
+  ${{ else }}:
+    imageName: development
+    serverCon: $(TEST_SERVER_ADR)
+
+stages:
+- stage:
+  displayName: 'Deploy to test environment'
+  jobs:
+    - job:
+      displayName: 'Build and deploy'
+      steps:
+        - task: Docker@2
+          displayName: 'Login to ACR'
+          inputs:
+            command: login
+            containerRegistry: allbertCommonRegistryConnection
+        - task: Bash@3
+          displayName: 'Echo server address'
+          inputs:
+            targetType: 'inline'
+            script: echo '${{variables.serverCon}}'
+        - task: Docker@2
+          displayName: 'Build docker image'
+          inputs:
+            command: 'build'
+            repository: 'allbertcms'
+            Dockerfile: '**/Dockerfile'
+            tags: |
+              ${{variables.imageName}}.v.$(Build.BuildId)
+              ${{variables.imageName}}
+            arguments: '--build-arg SERVER_ADR="${{variables.serverCon}}"'
+        - task: Docker@2
+          displayName: 'Push docker image'
+          inputs:
+            containerRegistry: 'allbertCommonRegistryConnection'
+            repository: 'allbertcms'
+            command: 'push'
+            tags: |
+              ${{variables.imageName}}.v.$(Build.BuildId)
+              ${{variables.imageName}}
